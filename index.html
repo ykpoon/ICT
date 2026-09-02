@@ -567,28 +567,50 @@
             }, 1200);
         }
 
-        // 5. 課堂測驗批改邏輯
-        const correctAnswers = { 1: 'B', 2: 'C', 3: 'D' };
+
+          // 5. 動態課堂測驗批改邏輯 (結合 Cloudflare API)
         let userScores = { 1: false, 2: false, 3: false };
 
-        function checkAnswer(qNum, selected) {
+        // 注意這裡加上了 async，因為我們要等待網路請求
+        async function checkAnswer(qNum, selected) {
             const feedbackEl = document.getElementById(`ans-feedback-${qNum}`);
-            const isCorrect = selected === correctAnswers[qNum];
-            userScores[qNum] = isCorrect;
-
+            
+            // 顯示載入中...
             feedbackEl.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+            feedbackEl.classList.add('bg-beige-200', 'text-beige-800');
+            feedbackEl.innerHTML = `正在雲端批改中... <i data-lucide="loader" class="inline w-4 h-4 animate-spin"></i>`;
+            lucide.createIcons();
 
-            if (isCorrect) {
-                feedbackEl.classList.add('bg-green-100', 'text-green-800');
-                feedbackEl.innerHTML = `✓ 回答正確！`;
-            } else {
-                feedbackEl.classList.add('bg-red-100', 'text-red-800');
-                feedbackEl.innerHTML = `✗ 回答錯誤，正確答案是 (${correctAnswers[qNum]})`;
+            try {
+                // 發送 POST 請求到我們寫好的 Cloudflare Function API
+                const response = await fetch('/api/check-answer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ questionId: qNum, selectedOption: selected })
+                });
+
+                // 取得後端回傳的判斷結果
+                const result = await response.json();
+                
+                userScores[qNum] = result.isCorrect;
+
+                // 更新 UI 介面
+                feedbackEl.classList.remove('bg-beige-200', 'text-beige-800');
+                if (result.isCorrect) {
+                    feedbackEl.classList.add('bg-green-100', 'text-green-800');
+                } else {
+                    feedbackEl.classList.add('bg-red-100', 'text-red-800');
+                }
+                feedbackEl.innerHTML = result.message;
+
+                // 計算總分
+                const scoreCount = Object.values(userScores).filter(Boolean).length;
+                document.getElementById('quiz-score').textContent = `得分：${scoreCount} / 3 題 (${Math.round(scoreCount/3*100)}分)`;
+
+            } catch (error) {
+                feedbackEl.innerHTML = `連線錯誤，請檢查網路！`;
+                console.error("API Error:", error);
             }
-
-            // 計算總分
-            const scoreCount = Object.values(userScores).filter(Boolean).length;
-            document.getElementById('quiz-score').textContent = `得分：${scoreCount} / 3 題 (${Math.round(scoreCount/3*100)}分)`;
         }
     </script>
 </body>
