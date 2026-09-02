@@ -448,15 +448,39 @@
             <div class="bg-white p-8 rounded-3xl border border-beige-200 shadow-sm space-y-6">
                 <h3 class="text-xl font-bold flex items-center gap-2"><i data-lucide="trophy" class="text-amberAccent"></i> 全班成績排行榜</h3>
                 
-                <!-- 提交成績表單 -->
-                <div class="flex flex-col sm:flex-row gap-3 items-center bg-beige-50 p-5 rounded-2xl border border-beige-200">
-                    <span class="text-sm font-bold text-beige-900 whitespace-nowrap">交卷署名：</span>
-                    <input type="text" id="student-name" placeholder="請輸入你的名字 (例如: 陳大文)" class="px-4 py-2.5 rounded-xl border border-beige-200 flex-grow text-sm focus:outline-none focus:border-amberAccent w-full">
-                    <button onclick="submitScore()" class="bg-amberAccent text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-amber-600 transition-colors w-full sm:w-auto flex items-center justify-center gap-2 shadow-sm">
-                        <i data-lucide="upload-cloud" class="w-4 h-4"></i> 提交成績
-                    </button>
+                                <!-- 提交成績表單 (升級版) -->
+                <div class="bg-beige-50 p-5 rounded-2xl border border-beige-200 space-y-3">
+                    <span class="text-sm font-bold text-beige-900">交卷資料填寫：</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <input type="text" id="stu-class" placeholder="班別 (例: 3A)" class="px-3 py-2 rounded-xl border border-beige-200 text-sm focus:outline-none focus:border-amberAccent w-full">
+                        <input type="number" id="stu-num" placeholder="學號 (例: 15)" class="px-3 py-2 rounded-xl border border-beige-200 text-sm focus:outline-none focus:border-amberAccent w-full">
+                        <input type="text" id="stu-id" placeholder="學生編號 (例: s12345)" class="px-3 py-2 rounded-xl border border-beige-200 text-sm focus:outline-none focus:border-amberAccent w-full">
+                        <input type="text" id="stu-name" placeholder="姓名 (例: 陳大文)" class="px-3 py-2 rounded-xl border border-beige-200 text-sm focus:outline-none focus:border-amberAccent w-full">
+                    </div>
+                    <div class="flex justify-end">
+                        <button onclick="submitScore()" class="bg-amberAccent text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-amber-600 transition-colors flex items-center justify-center gap-2 shadow-sm">
+                            <i data-lucide="upload-cloud" class="w-4 h-4"></i> 提交成績
+                        </button>
+                    </div>
                 </div>
                 <div id="submit-message" class="text-xs font-bold hidden px-2"></div>
+
+                <!-- 排行榜表格 -->
+                <div class="border border-beige-200 rounded-2xl overflow-hidden shadow-inner">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gradient-to-r from-beige-100 to-beige-50 text-beige-900 border-b border-beige-200">
+                            <tr>
+                                <th class="px-6 py-4 font-extrabold w-24">排名</th>
+                                <th class="px-6 py-4 font-extrabold">學生 (班別與學號)</th>
+                                <th class="px-6 py-4 font-extrabold text-right">測驗分數</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-body" class="divide-y divide-beige-100 bg-white">
+                            <tr><td colspan="3" class="px-6 py-8 text-center text-gray-500">載入中...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
 
                 <!-- 排行榜表格 -->
                 <div class="border border-beige-200 rounded-2xl overflow-hidden shadow-inner">
@@ -650,18 +674,21 @@
             }
         }
             // ==========================================
-        // 6. 提交成績到 Cloudflare KV
+             // ==========================================
+        // 6. 提交成績到 Cloudflare KV (升級 4 個資料)
         // ==========================================
         async function submitScore() {
-            const nameInput = document.getElementById('student-name').value.trim();
+            const stuClass = document.getElementById('stu-class').value.trim();
+            const stuNum = document.getElementById('stu-num').value.trim();
+            const stuId = document.getElementById('stu-id').value.trim();
+            const stuName = document.getElementById('stu-name').value.trim();
             const msgEl = document.getElementById('submit-message');
             
-            // 計算目前得分 (答對題數 / 3 * 100)
             const scoreCount = Object.values(userScores).filter(Boolean).length;
             const finalScore = Math.round(scoreCount / 3 * 100);
 
-            if (!nameInput) {
-                msgEl.textContent = '⚠️ 請先輸入名字才能交卷！';
+            if (!stuClass || !stuNum || !stuId || !stuName) {
+                msgEl.textContent = '⚠️ 請填寫完整的班別、學號、學生編號與姓名！';
                 msgEl.className = 'text-xs font-bold text-red-600 block px-2';
                 return;
             }
@@ -670,18 +697,27 @@
             msgEl.className = 'text-xs font-bold text-amber-600 block px-2';
 
             try {
-                // 呼叫我們剛剛在 Worker 寫好的 save-score API
                 const response = await fetch('/api/save-score', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ studentName: nameInput, score: finalScore })
+                    body: JSON.stringify({ 
+                        stuClass: stuClass, 
+                        stuNum: stuNum, 
+                        stuId: stuId, 
+                        stuName: stuName, 
+                        score: finalScore 
+                    })
                 });
 
                 if (response.ok) {
                     msgEl.textContent = '✅ 成績提交成功！名列前茅！';
                     msgEl.className = 'text-xs font-bold text-green-600 block px-2';
-                    document.getElementById('student-name').value = ''; // 清空輸入框
-                    loadLeaderboard(); // 重新抓取最新排行榜
+                    // 清空輸入框
+                    document.getElementById('stu-class').value = '';
+                    document.getElementById('stu-num').value = '';
+                    document.getElementById('stu-id').value = '';
+                    document.getElementById('stu-name').value = '';
+                    loadLeaderboard(); 
                 }
             } catch (error) {
                 msgEl.textContent = '❌ 提交失敗，請檢查網路連線。';
@@ -690,7 +726,7 @@
         }
 
         // ==========================================
-        // 7. 讀取並顯示排行榜
+        // 7. 讀取並顯示排行榜 (保護私隱版)
         // ==========================================
         async function loadLeaderboard() {
             const tbody = document.getElementById('leaderboard-body');
@@ -698,28 +734,27 @@
             lucide.createIcons();
 
             try {
-                // 呼叫我們在 Worker 寫好的 get-leaderboard API
-                const response = await fetch('/api/get-leaderboard');
+                const response = await fetch('/api/get-leaderboard', { cache: 'no-store' });
                 const data = await response.json();
                 
-                tbody.innerHTML = ''; // 清空舊畫面
+                tbody.innerHTML = ''; 
                 
                 if (data.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-8 text-center text-gray-500 font-medium">目前還沒有人提交成績，趕快搶頭香吧！</td></tr>';
                     return;
                 }
 
-                // 迴圈產生每一列的成績
                 data.forEach((student, index) => {
                     let rankDisplay = `<span class="text-gray-500 font-bold">${index + 1}</span>`;
                     if (index === 0) rankDisplay = '🥇 <span class="font-extrabold text-amber-600">1</span>';
                     else if (index === 1) rankDisplay = '🥈 <span class="font-bold text-gray-400">2</span>';
                     else if (index === 2) rankDisplay = '🥉 <span class="font-bold text-amber-800">3</span>';
 
+                    // 這裡只顯示後端傳來的 displayTitle (班別 + 學號)
                     tbody.innerHTML += `
                         <tr class="hover:bg-beige-50 transition-colors">
                             <td class="px-6 py-4">${rankDisplay}</td>
-                            <td class="px-6 py-4 font-bold text-beige-900">${student.name}</td>
+                            <td class="px-6 py-4 font-bold text-beige-900">${student.displayTitle}</td>
                             <td class="px-6 py-4 text-right font-extrabold text-sageAccent">${student.score} 分</td>
                         </tr>
                     `;
@@ -728,6 +763,7 @@
                 tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-8 text-center text-red-500 font-bold">排行榜讀取失敗</td></tr>';
             }
         }
+
 
         // 當網頁一打開時，自動抓取一次排行榜資料
         document.addEventListener('DOMContentLoaded', () => {
