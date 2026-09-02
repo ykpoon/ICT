@@ -28,103 +28,84 @@
     </style>
 </head>
 <body class="bg-beige-50 text-beige-900 min-h-screen flex flex-col">
+
     <!-- 頂部導航欄 -->
     <header class="bg-beige-100 border-b border-beige-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
             <div class="flex items-center space-x-3">
-                <div class="bg-amberAccent text-white p-2 rounded-xl"><i data-lucide="network"></i></div>
+                <div class="bg-amberAccent text-white p-2 rounded-xl">
+                    <i data-lucide="network"></i>
+                </div>
                 <div>
                     <h1 class="font-bold text-lg text-beige-900">電腦網絡基礎教學</h1>
                     <p class="text-xs text-amber-800">中學電腦科 / ICT 互動學習平台</p>
                 </div>
             </div>
+            <!-- 分頁按鈕標籤 -->
             <nav class="flex space-x-2 bg-beige-200/60 p-1.5 rounded-2xl">
-                <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-white text-beige-900 shadow-sm flex items-center gap-1.5"><i data-lucide="book-open" class="w-4 h-4"></i> 第一頁：網絡基礎與硬件</button>
-                <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-beige-800 hover:text-beige-900 flex items-center gap-1.5"><i data-lucide="layers" class="w-4 h-4"></i> 第二頁：OSI/TCP-IP與封包</button>
-                <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-beige-800 hover:text-beige-900 flex items-center gap-1.5"><i data-lucide="check-square" class="w-4 h-4"></i> 第三頁：測驗與教師專區</button>
+                <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-white text-beige-900 shadow-sm flex items-center gap-1.5">
+                    <i data-lucide="book-open" class="w-4 h-4"></i> 第一頁：網絡基礎與硬件
+                </button>
+                <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-beige-800 hover:text-beige-900 flex items-center gap-1.5">
+                    <i data-lucide="layers" class="w-4 h-4"></i> 第二頁：OSI/TCP-IP與封包
+                </button>
+                <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-beige-800 hover:text-beige-900 flex items-center gap-1.5">
+                    <i data-lucide="check-square" class="w-4 h-4"></i> 第三頁：測驗與教師專區
+                </button>
             </nav>
-            <button onclick="toggleTeacherMode()" id="teacher-mode-btn" class="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-xl border border-amberAccent/40 bg-amber-50 text-amberAccent hover:bg-amber-100 transition-colors"><i data-lucide="graduation-cap" class="w-4 h-4"></i> 教師模式：<span id="teacher-status">已關閉</span></button>
+            <!-- 教師模式切換按鈕 -->
+            <button onclick="toggleTeacherMode()" id="teacher-mode-btn" class="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-xl border border-amberAccent/40 bg-amber-50 text-amberAccent hover:bg-amber-100 transition-colors">
+                <i data-lucide="graduation-cap" class="w-4 h-4"></i> 教師模式：<span id="teacher-status">已關閉</span>
+            </button>
         </div>
     </header>
 
+    <!-- 主要內容區 -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- 內容已省略部分非重點區塊以節省空間，這裡直接切入重點的 Tab3 -->
-        <section id="tab1" class="tab-content space-y-8">
-            <div class="bg-white p-8 rounded-3xl border border-beige-200 shadow-sm text-center">
-                <h2 class="text-2xl font-bold">第一頁內容 (請切換至第三頁測試排行榜)</h2>
-            </div>
-        </section>
-        
-        <section id="tab2" class="tab-content space-y-8">
-            <div class="bg-white p-8 rounded-3xl border border-beige-200 shadow-sm text-center">
-                <h2 class="text-2xl font-bold">第二頁內容 (請切換至第三頁測試排行榜)</h2>
-            </div>
-        </section>
 
-        <!-- 第三頁：測驗與排行榜 -->
-        <section id="tab3" class="tab-content active space-y-8">
-            <div class="bg-gradient-to-r from-emerald-50 to-beige-100 p-8 rounded-3xl border border-beige-200 shadow-sm">
-                <span class="inline-block px-3 py-1 bg-sageAccent/10 text-sageAccent rounded-full text-xs font-bold mb-3">單元 3：課堂評估與複習</span>
-                <h2 class="text-3xl font-extrabold text-beige-900 mb-2">📝 課堂隨堂小測與教師專區</h2>
-            </div>
-
-            <!-- 測驗卡片群 -->
-            <div class="bg-white p-8 rounded-3xl border border-beige-200 shadow-sm space-y-8">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-xl font-bold flex items-center gap-2"><i data-lucide="help-circle" class="text-sageAccent"></i> 網絡概念小測</h3>
-                    <div id="quiz-score" class="text-xs font-bold text-amber-800 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200">得分：尚未作答</div>
-                </div>
-                <!-- Q1 -->
-                <div class="space-y-3 pb-6 border-b border-beige-100">
-                    <p class="font-bold text-sm">Q1. 負責連接所有電腦並根據 MAC 地址進行內部數據轉發的設備是？</p>
-                    <div class="grid md:grid-cols-2 gap-3 text-xs">
-                        <button onclick="checkAnswer(1, 'A')" class="p-3 rounded-xl border border-beige-200 text-left hover:bg-beige-50 transition-colors">A. 路由器 (Router)</button>
-                        <button onclick="checkAnswer(1, 'B')" class="p-3 rounded-xl border border-beige-200 text-left hover:bg-beige-50 transition-colors">B. 交換機 (Switch)</button>
+        <!-- ========================================== -->
+        <!-- 第一頁：網絡基礎與硬件 (PAGE 1) -->
+        <!-- ========================================== -->
+        <section id="tab1" class="tab-content active space-y-8">
+            <div class="bg-gradient-to-r from-amber-100 to-beige-100 p-8 rounded-3xl border border-beige-200 shadow-sm relative overflow-hidden">
+                <div class="max-w-2xl relative z-10">
+                    <span class="inline-block px-3 py-1 bg-amberAccent/10 text-amberAccent rounded-full text-xs font-bold mb-3">單元 1：網絡基礎</span>
+                    <h2 class="text-3xl font-extrabold text-beige-900 mb-2">🌐 探索互聯網世界：電腦網絡與設備</h2>
+                    <p class="text-beige-800 text-sm leading-relaxed mb-4">
+                        電腦網絡是由多台設備連接組成的系統，讓資料、資源與服務能夠彼此傳遞與共享。本頁將帶你掌握 LAN/WAN 分別、核心硬件運作，以及 IP 與 MAC 地址的秘密！
+                    </p>
+                    <div class="flex flex-wrap gap-2 text-xs font-medium text-beige-800">
+                        <span class="bg-white/80 px-2.5 py-1 rounded-lg border border-beige-200">✓ 局域網 (LAN) vs 廣域網 (WAN)</span>
+                        <span class="bg-white/80 px-2.5 py-1 rounded-lg border border-beige-200">✓ Switch vs Router 功能差異</span>
+                        <span class="bg-white/80 px-2.5 py-1 rounded-lg border border-beige-200">✓ IP 地址與 MAC 地址的對比</span>
                     </div>
-                    <div id="ans-feedback-1" class="text-xs hidden p-3 rounded-xl font-semibold"></div>
-                </div>
-                <!-- Q2 -->
-                <div class="space-y-3 pb-6 border-b border-beige-100">
-                    <p class="font-bold text-sm">Q2. 關於 IP Address 與 MAC Address？</p>
-                    <div class="grid md:grid-cols-2 gap-3 text-xs">
-                        <button onclick="checkAnswer(2, 'C')" class="p-3 rounded-xl border border-beige-200 text-left hover:bg-beige-50 transition-colors">C. MAC Address 就像身份證號碼，IP Address 就像寄信住址</button>
-                        <button onclick="checkAnswer(2, 'D')" class="p-3 rounded-xl border border-beige-200 text-left hover:bg-beige-50 transition-colors">D. IPv4 地址由 128 個 bits 組成</button>
-                    </div>
-                    <div id="ans-feedback-2" class="text-xs hidden p-3 rounded-xl font-semibold"></div>
-                </div>
-                <!-- Q3 -->
-                <div class="space-y-3">
-                    <p class="font-bold text-sm">Q3. HTTP、DNS 及 SMTP 屬於哪一層協定？</p>
-                    <div class="grid md:grid-cols-2 gap-3 text-xs">
-                        <button onclick="checkAnswer(3, 'C')" class="p-3 rounded-xl border border-beige-200 text-left hover:bg-beige-50 transition-colors">C. 傳輸層 (Transport Layer)</button>
-                        <button onclick="checkAnswer(3, 'D')" class="p-3 rounded-xl border border-beige-200 text-left hover:bg-beige-50 transition-colors">D. 應用層 (Application Layer)</button>
-                    </div>
-                    <div id="ans-feedback-3" class="text-xs hidden p-3 rounded-xl font-semibold"></div>
                 </div>
             </div>
 
-            <!-- 🏆 全班排行榜區塊 (4 個輸入框版本) -->
-            <div class="bg-white p-8 rounded-3xl border border-beige-200 shadow-sm space-y-6">
-                <h3 class="text-xl font-bold flex items-center gap-2"><i data-lucide="trophy" class="text-amberAccent"></i> 全班成績排行榜</h3>
-                
-                <!-- 提交成績表單 (升級版) -->
-                <div class="bg-beige-50 p-5 rounded-2xl border border-beige-200 space-y-3">
-                    <span class="text-sm font-bold text-beige-900">交卷資料填寫：</span>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <input type="text" id="stu-class" placeholder="班別 (例: 3A)" class="px-3 py-2 rounded-xl border border-beige-200 text-sm focus:outline-none focus:border-amberAccent w-full">
-                        <input type="number" id="stu-num" placeholder="學號 (例: 15)" class="px-3 py-2 rounded-xl border border-beige-200 text-sm focus:outline-none focus:border-amberAccent w-full">
-                        <input type="text" id="stu-id" placeholder="學生編號 (例: s12345)" class="px-3 py-2 rounded-xl border border-beige-200 text-sm focus:outline-none focus:border-amberAccent w-full">
-                        <input type="text" id="stu-name" placeholder="姓名 (例: 陳大文)" class="px-3 py-2 rounded-xl border border-beige-200 text-sm focus:outline-none focus:border-amberAccent w-full">
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold flex items-center gap-2"><i data-lucide="globe" class="text-amberAccent"></i> 網絡覆蓋範圍：LAN vs WAN</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-beige-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-lg font-bold text-navyAccent">局域網 (LAN - Local Area Network)</h4>
+                                <p class="text-xs text-gray-500">地理範圍小（如單一房間、學校電腦室、住宅）</p>
+                            </div>
+                            <span class="px-3 py-1 bg-blue-50 text-navyAccent font-bold text-xs rounded-lg">高傳輸速度</span>
+                        </div>
+                        <ul class="text-sm space-y-2 text-beige-800">
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-green-600 mt-0.5"></i> 典型範例：學校電腦室、家中 Wi-Fi 網絡</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-green-600 mt-0.5"></i> 核心優勢：資料傳輸速率極高、延遲低、安全性較佳</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-green-600 mt-0.5"></i> 連接方式：使用 Ethernet 乙太網絡纜線或 Wi-Fi</li>
+                        </ul>
                     </div>
-                    <div class="flex justify-end">
-                        <button onclick="submitScore()" class="bg-amberAccent text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-amber-600 transition-colors flex items-center justify-center gap-2 shadow-sm">
-                            <i data-lucide="upload-cloud" class="w-4 h-4"></i> 提交成績
-                        </button>
-                    </div>
-                </div>
-                <div id="submit-message" class="text-xs font-bold hidden px-2"></div>
-
-                <!-- 排行榜表格 (保護私隱版) -->
-                <div class="border border-beige-200 rounded-2xl overflow-hidden shadow-inner">
-                    <table class="w-full text-sm text-left">
-                        <thead class="bg-gradie
+                    <div class="bg-white p-6 rounded-2xl border border-beige-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-lg font-bold text-rustAccent">廣域網 (WAN - Wide Area Network)</h4>
+                                <p class="text-xs text-gray-500">地理範圍廣（跨越城市、國家甚至全球）</p>
+                            </div>
+                            <span class="px-3 py-1 bg-red-50 text-rustAccent font-bold text-xs rounded-lg">跨區域連接</span>
+                        </div>
+                        <ul class="text-sm space-y-2 text-beige-800">
+                            <li class="flex items-start gap-2"><i data-lucide="chec
