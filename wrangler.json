@@ -1,0 +1,8 @@
+{
+  "name": "ictlearner",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-02",
+  "assets": {
+    "directory": "public"
+  }
+}
