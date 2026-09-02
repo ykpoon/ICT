@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中學電腦科 (ICT) 互動學習平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 自定義拖曳狀態與配對成功狀態的樣式 */
+        .draggable { cursor: grab; }
+        .draggable:active { cursor: grabbing; }
+        .dropzone { transition: all 0.3s ease; }
+        .dropzone.dragover { border-color: #3b82f6; background-color: #eff6ff; }
+        .matched { background-color: #f0fdf4; border-color: #22c55e !important; }
+        .matched-text { color: #166534; font-weight: bold; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal text-gray-800">
+
+    <!-- 導航列 -->
+    <nav class="bg-indigo-600 p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center text-white">
+            <h1 class="text-xl md:text-2xl font-bold tracking-wider">ICT 互動學習平台</h1>
+            <p class="text-sm hidden md:block opacity-80">現代網絡與電腦系統基礎</p>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8 mt-4 space-y-12 mb-20">
+        
+        <!-- 區塊一：網路模型對照卡片 -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-10">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-3">網絡協定模型比較</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">了解 OSI 七層模型與 TCP/IP 四層模型的架構差異與對應關係，這是理解網絡數據傳輸的基礎。</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                <!-- OSI 模型卡片 -->
+                <div class="border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                    <div class="bg-blue-600 text-white text-center py-4 font-bold text-xl tracking-wide">OSI 七層模型</div>
+                    <ul class="divide-y divide-gray-100 text-sm md:text-base">
+                        <li class="p-4 flex items-center hover:bg-gray-50"><span class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold mr-4 shrink-0">7</span> <div><strong class="block text-gray-800 text-lg">應用層 (Application)</strong><span class="text-gray-500">為網絡應用程式提供介面與服務</span></div></li>
+                        <li class="p-4 flex items-center hover:bg-gray-50"><span class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold mr-4 shrink-0">6</span> <div><strong class="block text-gray-800 text-lg">表達層 (Presentation)</strong><span class="text-gray-500">負責數據格式化、加密與解密</span></div></li>
+                        <li class="p-4 flex items-center hover:bg-gray-50"><span class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold mr-4 shrink-0">5</span> <div><strong class="block text-gray-800 text-lg">會話層 (Session)</strong><span class="text-gray-500">建立、管理及終止應用程式之間的會話</span></div></li>
+                        <li class="p-4 flex items-center hover:bg-gray-50"><span class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold mr-4 shrink-0">4</span> <div><strong class="block text-gray-800 text-lg">傳輸層 (Transport)</strong><span class="text-gray-500">提供端對端的可靠傳輸 (如 TCP, UDP)</span></div></li>
+                        <li class="p-4 flex items-center hover:bg-gray-50"><span class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold mr-4 shrink-0">3</span> <div><strong class="block text-gray-800 text-lg">網絡層 (Network)</strong><span class="text-gray-500">處理路由與邏輯尋址 (如 IP 地址)</span></div></li>
+                        <li class="p-4 flex items-center hover:bg-gray-50"><span class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold mr-4 shrink-0">2</span> <div><strong class="block text-gray-800 text-lg">數據鏈路層 (Data Link)</strong><span class="text-gray-500">實體尋址 (MAC 地址) 與錯誤偵測</span></div></li>
+                        <li class="p-4 flex items-center hover:bg-gray-50"><span class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold mr-4 shrink-0">1</span> <div><strong class="block text-gray-800 text-lg">物理層 (Physical)</strong><span class="text-gray-500">傳輸原始的比特流 (光、電訊號)</span></div></li>
+                    </ul>
+                </div>
+
+                <!-- TCP/IP 模型卡片 -->
+                <div class="border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                    <div class="bg-emerald-600 text-white text-center py-4 font-bold text-xl tracking-wide">TCP/IP 四層模型</div>
+                    <ul class="divide-y divide-gray-100 h-full flex flex-col text-sm md:text-base">
+                        <li class="p-4 flex-grow flex items-center bg-emerald-50/50 hover:bg-emerald-50"><span class="w-8 h-8 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold mr-4 shrink-0">4</span> <div><strong class="block text-gray-800 text-lg">應用層 (Application)</strong><span class="text-gray-500">對應 OSI 第 5-7 層，包含 HTTP, FTP 等高層協定</span></div></li>
+                        <li class="p-4 flex-grow flex items-center hover:bg-gray-50"><span class="w-8 h-8 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold mr-4 shrink-0">3</span> <div><strong class="block text-gray-800 text-lg">傳輸層 (Transport)</strong><span class="text-gray-500">對應 OSI 第 4 層，負責應用程式間的通訊</span></div></li>
+                        <li class="p-4 flex-grow flex items-center bg-emerald-50/50 hover:bg-emerald-50"><span class="w-8 h-8 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold mr-4 shrink-0">2</span> <div><strong class="block text-gray-800 text-lg">互聯網層 (Internet)</strong><span class="text-gray-500">對應 OSI 第 3 層，負責數據包的路由選擇</span></div></li>
+                        <li class="p-4 flex-grow flex items-center hover:bg-gray-50"><span class="w-8 h-8 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold mr-4 shrink-0">1</span> <div><strong class="block text-gray-800 text-lg">網絡接口層 (Network Access)</strong><span class="text-gray-500">對應 OSI 第 1-2 層，處理硬件與實體傳輸</span></div></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 區塊二：硬件配對小遊戲 -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-10">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-3">電腦硬件配對任務</h2>
+                <p class="text-gray-500">測試你的硬體知識！請將上方的<strong class="text-indigo-600">藍色硬件名稱</strong>拖曳到下方正確的<strong class="text-indigo-600">功能描述</strong>框中。</p>
+            </div>
+
+            <!-- 可拖曳的硬件項目 -->
+            <div class="flex flex-wrap gap-4 justify-center mb-12 min-h-[60px]" id="hardware-pool">
+                <div class="draggable bg-indigo-100 text-indigo-800 px-5 py-2.5 rounded-lg shadow-sm font-semibold border-2 border-indigo-200 hover:bg-indigo-200 hover:scale-105 transition transform select-none" draggable="true" data-id="cpu">中央處理器 (CPU)</div>
+                <div class="draggable bg-indigo-100 text-indigo-800 px-5 py-2.5 rounded-lg shadow-sm font-semibold border-2 border-indigo-200 hover:bg-indigo-200 hover:scale-105 transition transform select-none" draggable="true" data-id="ram">隨機存取記憶體 (RAM)</div>
+                <div class="draggable bg-indigo-100 text-indigo-800 px-5 py-2.5 rounded-lg shadow-sm font-semibold border-2 border-indigo-200 hover:bg-indigo-200 hover:scale-105 transition transform select-none" draggable="true" data-id="hdd">硬碟 / 固態硬碟 (HDD/SSD)</div>
+                <div class="draggable bg-indigo-100 text-indigo-800 px-5 py-2.5 rounded-lg shadow-sm font-semibold border-2 border-indigo-200 hover:bg-indigo-200 hover:scale-105 transition transform select-none" draggable="true" data-id="gpu">顯示卡 (GPU)</div>
+                <div class="draggable bg-indigo-100 text-indigo-800 px-5 py-2.5 rounded-lg shadow-sm font-semibold border-2 border-indigo-200 hover:bg-indigo-200 hover:scale-105 transition transform select-none" draggable="true" data-id="mobo">主機板 (Motherboard)</div>
+                <div class="draggable bg-indigo-100 text-indigo-800 px-5 py-2.5 rounded-lg shadow-sm font-semibold border-2 border-indigo-200 hover:bg-indigo-200 hover:scale-105 transition transform select-none" draggable="true" data-id="psu">電源供應器 (PSU)</div>
+            </div>
+
+            <!-- 目標放置區 -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="dropzones">
+                <!-- 放置區：CPU -->
+                <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-5 flex flex-col justify-between items-center text-center bg-gray-50" data-target="cpu">
+                    <p class="text-gray-700 font-medium mb-4">電腦的「大腦」，負責讀取、解碼並執行程式指令與各種運算。</p>
+                    <div class="placeholder text-sm text-gray-400 bg-white border border-gray-200 px-6 py-2 rounded-full w-full">拖曳至此</div>
+                </div>
+                <!-- 放置區：RAM -->
+                <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-5 flex flex-col justify-between items-center text-center bg-gray-50" data-target="ram">
+                    <p class="text-gray-700 font-medium mb-4">暫存正在執行的程式與數據，屬於揮發性記憶體，關機後資料會消失。</p>
+                    <div class="placeholder text-sm text-gray-400 bg-white border border-gray-200 px-6 py-2 rounded-full w-full">拖曳至此</div>
+                </div>
+                <!-- 放置區：HDD/SSD -->
+                <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-5 flex flex-col justify-between items-center text-center bg-gray-50" data-target="hdd">
+                    <p class="text-gray-700 font-medium mb-4">永久儲存電腦中的作業系統、應用程式與使用者檔案（非揮發性）。</p>
+                    <div class="placeholder text-sm text-gray-400 bg-white border border-gray-200 px-6 py-2 rounded-full w-full">拖曳至此</div>
+                </div>
+                <!-- 放置區：GPU -->
+                <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-5 flex flex-col justify-between items-center text-center bg-gray-50" data-target="gpu">
+                    <p class="text-gray-700 font-medium mb-4">專門負責處理圖像、3D 渲染與影片編碼
